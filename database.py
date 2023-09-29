@@ -36,6 +36,10 @@ def get_user(user_id):
     return get_results(f"select * from users where users.id = '{user_id}' ")
 
 
+def get_user_by_username(username):
+    return get_results(f"select * from users where users.username = '{username}' ")
+
+
 def get_timesheets(user_id):
     return get_results(
         f"""select *  

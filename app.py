@@ -8,6 +8,8 @@ from flask import (
     flash,
     get_flashed_messages,
 )
+from flask_login import LoginManager, login_required
+from flask_bcrypt import Bcrypt
 from datetime import datetime, date
 from jinja2 import Template
 
@@ -20,7 +22,17 @@ app.secret_key = os.getenv("APP_KEY")
 
 date_template = Template("{{ date.strftime('%I:%M %p')}}")
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+bcrypt = Bcrypt(app)
+
 USER_ID = "318b423c-1da8-4d07-b3e6-e1321562a90a"
+
+
+@login_manager.user_loader
+def load_user(username):
+    return database.get_user_by_username(username)[0]
 
 
 @app.route("/")
@@ -37,6 +49,21 @@ def home():
         hospitals=hospitals,
         invoices=invoices,
     )
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    user = load_user(request.form.get("username"))
+    # print(len(bcrypt.generate_password_hash("password").decode("UTF-8")))
+    # print(user)
+    if user:
+        if bcrypt.check_password_hash(
+            request.form.get("password"), user["userPassword"]
+        ):
+            print("hi")
+            return redirect(url_for("home"))
+
+    return render_template("login.html")
 
 
 @app.route("/time/add", methods=["GET", "POST"])
