@@ -1,0 +1,24 @@
+<table class="table table-hover mb-4">
+    <thead>
+        <th class="text-center">Date</th>
+        <th class="text-center">Clock In</th>
+        <th class="text-center">Clock Out</th>
+        <th class="text-center">Rate Type</th>
+        <th class="text-center">Rate</th>
+        <th class="text-center">Daily Amount</th>
+    </thead>
+    <tbody>
+        {% for timesheet in timesheets %}
+        {% if timesheet['invoiceCode'] == invoice['invoiceCode'] %}
+        <tr>
+            <td class="text-center text-nowrap">{{timesheet['dateWorked'].strftime("%B %d, %Y")}}</td>
+            <td class="text-center text-nowrap">{{timesheet['clockInTime'].strftime("%I:%M %p")}}</td>
+            <td class="text-center text-nowrap">{{timesheet['clockOutTime'].strftime("%I:%M %p")}}</td>
+            <td class="text-center">{{timesheet['rateType']}}</td>
+            <td class="text-center">{{timesheet['rateAmount'] | format_currency | string}}</td>
+            <td class="text-center">{{timesheet['dailyAmount'] | format_currency | string}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>

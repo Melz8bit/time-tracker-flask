@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Time Tracker</title>
+
+    {% include 'bootstrap.html' %}
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    <div class="container">
+        <h4 class="display-5 mt-4 mb-4">Add Hospital</h4>
+        <form action="/hospital/add" method="POST">
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Hospital Name</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="text" name="hospital_name" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Hospital Code</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="text" name="hospital_code" maxlength="4" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Address</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="text" name="hospital_address" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">City</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="text" name="hospital_city" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">State</label>
+                <div class="col-sm-10">
+                    <select class="form-select form-select-sm col-8 w-50" aria-label="State" name="hospital_state">
+                        <option selected>Select State</option>
+                        {% include 'state_options.html' %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Zip Code</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="text" name="hospital_zip" maxlength="5"
+                        pattern="[0-9]{5}" required>
+                </div>
+            </div>
+
+            <div class=" row mb-4">
+                <label class="col-sm-2 col-form-label">Phone #</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="tel" name="hospital_phone"
+                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="email" name="hospital_email" required>
+                </div>
+            </div>
+
+            <div>
+                <input class="btn btn-outline-primary col-2" type="submit">
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

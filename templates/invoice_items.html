@@ -1,0 +1,100 @@
+<div class="row justify-content-between mt-4">
+    <h3 class="display-6 col-4">
+        <a class="link-dark link-underline-opacity-0" href="/invoices">Invoices</a>
+    </h3>
+
+    <div class="col-1">
+        <a href="/invoice/create" type="button" class="btn btn-outline-primary">Create</a>
+    </div>
+</div>
+<table class="table table-striped mb-4">
+    <thead>
+        <th class="text-center">Hospital Name</th>
+        <th class="text-center">Invoice Code</th>
+        <th class="text-center">Total</th>
+        <th class="text-center">Status</th>
+        <th class="text-center">Status Date</th>
+        {% if request.endpoint == 'show_all_invoices' %}
+        <th class="text-center">User Control</th>
+        {% endif %}
+    </thead>
+    <tbody>
+        {% for invoice in invoices %}
+        <tr class="align-middle">
+            <td>
+                {{invoice['hospitalName']}}
+            </td>
+            <td class="text-center">{{invoice['invoiceCode']}}</td>
+            <td class="text-center">{{invoice['invoiceTotal'] | format_currency | string}}</td>
+            <td class="text-center">{{invoice['invoiceStatus']}}</td>
+            <td class="text-center">{{invoice['invoiceStatusDate'].strftime("%m/%d/%Y")}}</td>
+            {% if request.endpoint == 'show_all_invoices' %}
+            <td>
+                <div class="row gx-1 justify-content-around">
+                    <button class="btn btn-outline-primary btn-sm col-3 expand-button" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#{{invoice['invoiceCode']}}" aria-expanded="false"
+                        aria-controls="{{invoice['invoiceCode']}}">View
+                    </button>
+                    <button id="updateButton" type="button" class="btn btn-outline-primary btn-sm col-4"
+                        data-bs-toggle="modal" data-bs-target="#{{invoice['invoiceCode']}}">Update</button>
+                    <form action="/invoice/print" class="col-3" method="GET">
+                        <input name="invoice_code" value="{{invoice['invoiceCode']}}" hidden />
+                        <input name="hospital_id" value="{{invoice['invoiceHospitalID']}}" hidden />
+                        <button class="btn btn-outline-primary btn-sm col w-100" type="submit">Print</button>
+                    </form>
+                </div>
+
+                <!-- Invoice Update Modal -->
+                <form action="/invoices" method="POST">
+                    <div class="modal fade" id="{{invoice['invoiceCode']}}" data-bs-backdrop="static"
+                        data-bs-keyboard="false" tabindex="-1" aria-labelledby="invoiceUpdateModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="invoiceUpdateModalLabel">
+                                        Invoice Update - {{invoice['invoiceCode']}}</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                    <input name="invoice_code" value="{{invoice['invoiceCode']}}" hidden />
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <label class="col" for="selectInvoiceStatus">Invoice Status:</label>
+                                        <select class="form-select form-select-sm col" aria-label="State"
+                                            name="invoice_status">
+                                            <option selected disabled id="selectInvoiceStatus">
+                                                {{invoice['invoiceStatus']}}</option>
+                                            <option disabled>────────────────────</option>
+                                            <option>Pending</option>
+                                            <option>Billed</option>
+                                            <option>Paid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </td>
+            {% endif %}
+        </tr>
+        <tr></tr>
+
+        <!-- Invoice View Collapsible -->
+        <tr class="collapse" id="{{invoice['invoiceCode']}}">
+            <td colspan="6">
+                <div class="card card-body border-info">
+                    {% include 'timesheets_on_invoice.html' %}
+                </div>
+            </td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>

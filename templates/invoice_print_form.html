@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Time Tracker</title>
+    <link rel="icon" type="image/x-icon" href="/static/clock.png">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    {% include 'bootstrap.html' %}
+    <style media="print">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 99%;
+        }
+
+        body {
+            min-width: 100vw;
+            margin: 0;
+        }
+
+        .printArea {
+            min-width: 100%;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin-bottom: 15px;
+        }
+
+        #formBody {
+            height: 9%;
+        }
+
+        #navBar {
+            display: none;
+        }
+    </style>
+
+    <style>
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin-bottom: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="navBar">
+        {% include 'nav.html' %}
+    </div>
+    <div id="formBody" class="container mx-20 printArea border-black">
+        <!-- Header -->
+        <div class="row mt-3">
+            <h1 class="display-2 col-7">Invoice</h1>
+            <div class="col-4">
+                <div class="row justify-content-end">
+                    <div class="col-5 fw-bold">Date:</div>
+                    <div class="col-4">{{ today_date }}</div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-5 fw-bold">Invoice #:</div>
+                    <div class="col-4">{{ invoice_info['invoiceCode'] }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mailing/Billing Info -->
+        <div class="row mt-5">
+            <div class="col">
+                <div class="row">
+                    <div class="col-3 fw-bold border-end border-2">Mailing Info</div>
+                    <div class="col">
+                        {% if user_info['companyName'] %}
+                        <label class="fw-semibold">{{ user_info['companyName'] }}</label><br>
+                        {% else %}
+                        <label class="fw-semibold">{{ user_info['firstName'] }} {{ user_info['lastName'] }}</label><br>
+                        {% endif %}
+                        {{ user_info['mailingAddress'] }}</label><br>
+                        {{ user_info['mailingCity'] }}, {{ user_info['mailingState'] }} {{ user_info['mailingZip']}}<br>
+                        <label class="fw-medium">Phone #:</label> {{ user_info['phoneNumber'] |
+                        format_phone_number }}<br>
+                        <div class="fs-6">
+                            <label class="fw-medium">Email:</label> {{ user_info['email'] }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-3 fw-bold border-end border-2">Billing Info</div>
+                    <div class="col">
+                        <label class="fw-semibold">{{ hospital_info['hospitalName']}}</label><br>
+                        {{ hospital_info['hospitalAddress'] }}</label><br>
+                        {{ hospital_info['hospitalCity'] }}, {{ hospital_info['hospitalState'] }}
+                        {{hospital_info['hospitalZip']}}<br>
+                        <label class="fw-medium">Phone #:</label> {{ hospital_info['hospitalPhone'] |
+                        format_phone_number }}<br>
+                        <div class="fs-6">
+                            <label class="fw-medium">Email:</label> {{ hospital_info['hospitalEmail'] }}<br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Line Items -->
+        <div class="mt-5">
+            <table class="table mb-4">
+                <thead>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Clock In</th>
+                    <th class="text-center">Clock Out</th>
+                    <th class="text-center">Rate Type</th>
+                    <th class="text-center">Rate</th>
+                    <th class="text-center">Daily Amount</th>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for invoice_item in invoice_items %}
+                    <tr>
+                        <td class="text-center text-nowrap">{{invoice_item['dateWorked'].strftime("%B %d, %Y")}}</td>
+                        <td class="text-center text-nowrap">{{invoice_item['clockInTime'].strftime("%I:%M %p")}}</td>
+                        <td class="text-center text-nowrap">{{invoice_item['clockOutTime'].strftime("%I:%M %p")}}</td>
+                        <td class="text-center">{{invoice_item['rateType']}}</td>
+                        <td class="text-center">{{invoice_item['rateAmount'] | format_currency | string}}</td>
+                        <td class="text-center">{{invoice_item['dailyAmount'] | format_currency | string}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="table-group-divider">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-end fst-italic">Total:</td>
+                        <td class="text-center">{{ invoice_info['invoiceTotal'] | format_currency | string }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Invoice Footer -->
+    <div class="container footer printArea border-top border-2 border-black">
+        <div class="mt-2 mb-5">
+            <div class="float-start">
+                <label class="fw-medium">Thank you for your business!</label>
+            </div>
+            <div class="fw-semibold text-decoration-underline d-flex float-end">
+                <label>Payment Due Upon Receipt</label>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-5">
+                <label class="fw-medium">Please make checks payable to:</label>
+            </div>
+            <div class="col">
+                {% if user_info['companyName'] %}
+                {{ user_info['companyName'] }}
+                {% else %}
+                {{ user_info['firstName'] }} {{ user_info['lastName'] }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

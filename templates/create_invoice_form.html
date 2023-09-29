@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Time Tracker</title>
+
+    {% include 'bootstrap.html' %}
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    <div class="container">
+        <h4 class="display-5 mt-4 mb-4">Create Invoice</h4>
+
+        <form action="/invoice/create" method="GET" name="select_hospital_name">
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Hospital Name</label>
+                <div class="col-sm-10">
+                    <select class="form-select form-select-sm col-8 w-50" aria-label="Hospital name" name="hospital_id"
+                        onchange="this.form.submit()" required>
+                        {% if user_hospitals | length==1 %}
+                        <option selected disabled>{{ user_hospitals[0]['hospitalName'] }}</option>
+                        {% else %}
+                        <option selected>Select Hospital</option>
+                        {% for user_hospital in user_hospitals %}
+                        <option value="{{user_hospital['hospitalID']}}">{{ user_hospital['hospitalName'] }}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+        </form>
+        {% if request_method == "POST" and user_hospitals | length==1 %}
+        <form action="/invoice/create" method="POST">
+            <table class="table table-striped mb-4">
+                <thead>
+                    <th class="text-center">Select</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Hospital</th>
+                    <th class="text-center">Clock In</th>
+                    <th class="text-center">Clock Out</th>
+                    <th class="text-center">Rate Type</th>
+                    <th class="text-center">Rate</th>
+                    <th class="text-center">Daily Amount</th>
+                </thead>
+                <tbody>
+                    {% for timesheet in timesheets %}
+                    <tr>
+                        <td class="text-center align-items-center">
+                            <input class="form-check-input" type="checkbox" value="{{timesheet['timesheetID']}}"
+                                aria-label="Checkbox for following text input" name="timesheet_id">
+                        </td>
+                        <td class="text-nowrap">{{timesheet['dateWorked'].strftime("%B %d, %Y")}}</td>
+                        <td>{{timesheet['hospitalName']}}</td>
+                        <td class="text-center text-nowrap">{{timesheet['clockInTime'].strftime("%I:%M %p")}}</td>
+                        <td class="text-center text-nowrap">{{timesheet['clockOutTime'].strftime("%I:%M %p")}}</td>
+                        <td class="text-center">{{timesheet['rateType']}}</td>
+                        <td class="text-center">{{timesheet['rateAmount'] | format_currency | string}}</td>
+                        <td class="text-center">{{timesheet['dailyAmount'] | format_currency | string}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="row mb-4">
+                <label class="col-3">Invoice Number: </label>
+                <input class="col-2 text-center" type="text" name="invoice_code" value="{{ invoice_code }}" readonly>
+                <input class="col-2 text-center" type="hidden" name="max_invoice_number"
+                    value="{{ max_invoice_number }}">
+            </div>
+            <button class="btn btn-primary" type="submit">Create Invoice</button>
+        </form>
+        {% endif %}
+
+    </div>
+</body>
+
+</html>

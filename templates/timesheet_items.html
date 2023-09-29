@@ -1,0 +1,49 @@
+<div class="row justify-content-between mt-4">
+    <h3 class="display-6 col-4">
+        <a class="link-dark link-underline-opacity-0" href="/timesheets">Timesheet</a>
+    </h3>
+    <div class="col-1">
+        <a href="/time/add" type="button" class="btn btn-outline-primary">Add</a>
+    </div>
+</div>
+<table class="table table-striped mb-4">
+    <thead>
+        <th class="text-center">Date</th>
+        <th class="text-center">Hospital</th>
+        <th class="text-center">Clock In</th>
+        <th class="text-center">Clock Out</th>
+        <th class="text-center">Rate Type</th>
+        <th class="text-center">Rate</th>
+        <th class="text-center">Daily Amount</th>
+        {% if request.endpoint == 'show_all_timesheets' %}
+        <th class="text-center">Invoice Number</th>
+        <th class="text-center">Status</th>
+        <th class="text-center">Date</th>
+        {% endif %}
+    </thead>
+    <tbody>
+        {% for timesheet in timesheets %}
+        <tr>
+            <td class="text-nowrap">{{timesheet['dateWorked'].strftime("%B %d, %Y")}}</td>
+            <td>{{timesheet['hospitalName']}}</td>
+            <td class="text-center text-nowrap">{{timesheet['clockInTime'].strftime("%I:%M %p")}}</td>
+            <td class="text-center text-nowrap">{{timesheet['clockOutTime'].strftime("%I:%M %p")}}</td>
+            <td class="text-center">{{timesheet['rateType']}}</td>
+            <td class="text-center">{{timesheet['rateAmount'] | format_currency | string}}</td>
+            <td class="text-center">{{timesheet['dailyAmount'] | format_currency | string}}</td>
+            {% if request.endpoint == 'show_all_timesheets' %}
+            {% if not timesheet['invoiceCode'] %}
+            <td class="text-center">-</td>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            {% else %}
+            <td class="text-center">{{timesheet['invoiceCode']}}</td>
+            <td class="text-center">{{timesheet['invoiceStatus']}}</td>
+            <td class="text-center">{{timesheet['invoiceStatusDate'].strftime("%m/%d/%Y")}}</td>
+            {% endif %}
+
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

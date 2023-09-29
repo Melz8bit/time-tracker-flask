@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Time Tracker</title>
+
+    {% include 'bootstrap.html' %}
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    <div class="container">
+        <h4 class="display-5 mt-4 mb-4">Add Time</h4>
+        <form action="/time/add" method="POST">
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Hospital Name</label>
+                <div class="col-sm-10">
+                    <select class="form-select form-select-sm col-8 w-50" aria-label="Hospital name" name="hospital_id">
+                        <option selected>Select Hospital</option>
+                        {% for user_hospital in user_hospitals %}
+                        <option value="{{user_hospital['hospitalID']}}">{{ user_hospital['hospitalName'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Date Worked</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="date" name="date_worked" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Clock In</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="time" name="clock_in" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Clock Out</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="time" name="clock_out" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Rate Type</label>
+                <div class="col-sm-10">
+                    <select class="form-select form-select-sm col-8 w-50" aria-label="Rate type" name="rate_type">
+                        <option selected>Select Rate Type</option>
+                        <option value="Hourly">Hourly</option>
+                        <option value="Shift">Per Shift</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-2 col-form-label">Rate Amount ($)</label>
+                <div class="col-sm-10">
+                    <input class="form-control col-8 w-50" type="number" name="rate_amount" min="0.01" step="0.01"
+                        required>
+                </div>
+            </div>
+
+            <div>
+                <input class="btn btn-outline-primary col-2" type="submit">
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

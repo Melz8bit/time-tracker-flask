@@ -1,0 +1,33 @@
+<div class="row justify-content-between mt-4">
+    <h3 class="display-6 col-4">
+        <a class="link-dark link-underline-opacity-0" href="/hospitals">Hospitals</a>
+    </h3>
+
+    <div class="col-1">
+        <a href="/hospital/add" type="button" class="btn btn-outline-primary">Add</a>
+    </div>
+</div>
+<table class="table table-striped mb-4">
+    <thead>
+        <th class="text-center">Name</th>
+        <th class="text-center">Address</th>
+        <th class="text-center">City</th>
+        <th class="text-center">State</th>
+        <th class="text-center text-nowrap">Zip Code</th>
+        <th class="text-center">Phone</th>
+        <th class="text-center">Email</th>
+    </thead>
+    <tbody>
+        {% for hospital in hospitals %}
+        <tr>
+            <td class="text-nowrap">{{hospital['hospitalName']}}</td>
+            <td class="text-nowrap">{{hospital['hospitalAddress']}}</td>
+            <td class="text-nowrap">{{hospital['hospitalCity']}}</td>
+            <td class="text-nowrap text-center">{{hospital['hospitalState']}}</td>
+            <td class="text-nowrap text-center">{{hospital['hospitalZip']}}</td>
+            <td class="text-nowrap">{{hospital['hospitalPhone']}}</td>
+            <td class="text-nowrap">{{hospital['hospitalEmail']}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
