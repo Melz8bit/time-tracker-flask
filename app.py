@@ -1,21 +1,22 @@
+import locale
+import os
+from datetime import date, datetime
+
+import bcrypt
 from flask import (
     Flask,
-    render_template,
-    request,
-    jsonify,
-    redirect,
-    url_for,
     flash,
     get_flashed_messages,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
 )
 from flask_login import LoginManager, login_required
-from flask_bcrypt import Bcrypt
-from datetime import datetime, date
 from jinja2 import Template
 
 import database
-import locale
-import os
 
 app = Flask(__name__)
 app.secret_key = os.getenv("APP_KEY")
@@ -25,9 +26,8 @@ date_template = Template("{{ date.strftime('%I:%M %p')}}")
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
-bcrypt = Bcrypt(app)
 
-USER_ID = "318b423c-1da8-4d07-b3e6-e1321562a90a"
+USER_ID = ""
 
 
 @login_manager.user_loader
@@ -53,17 +53,28 @@ def home():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    user = load_user(request.form.get("username"))
-    # print(len(bcrypt.generate_password_hash("password").decode("UTF-8")))
-    # print(user)
-    if user:
-        if bcrypt.check_password_hash(
-            request.form.get("password"), user["userPassword"]
-        ):
-            print("hi")
-            return redirect(url_for("home"))
+    if request.method == "POST":
+        user = load_user(request.form.get("username"))
+        if user:
+            user_password = request.form.get("password").encode("utf-8")
+            if bcrypt.checkpw(user_password, user["userPassword"]):
+                global USER_ID
+                USER_ID = user["id"]
+                return redirect(url_for("home"))
 
     return render_template("login.html")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register_user():
+    if request.method == "POST":
+        data = request.form
+        password_bytes = data["password"].encode("utf-8")
+        password_hash = bcrypt.hashpw(password_bytes, bcrypt.gensalt()).decode("utf-8")
+        database.add_new_user(data, password_hash)
+        return jsonify(data)
+
+    return render_template("register.html")
 
 
 @app.route("/time/add", methods=["GET", "POST"])
