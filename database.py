@@ -1,7 +1,8 @@
-import sqlalchemy
 import os
-
+import uuid
 from datetime import datetime
+
+import sqlalchemy
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 
@@ -38,6 +39,48 @@ def get_user(user_id):
 
 def get_user_by_username(username):
     return get_results(f"select * from users where users.username = '{username}' ")
+
+
+def update_user_password(user_id, password_hash):
+    with engine.connect() as conn:
+        query = text(
+            f"""UPDATE users
+                SET userPassword = :userPassword
+                WHERE id = :userID
+            """
+        )
+
+        query_params = {
+            "userPassword": password_hash,
+            "userID": user_id,
+        }
+
+        conn.execute(
+            statement=query,
+            parameters=query_params,
+        )
+
+
+def add_new_user(data, password_hash):
+    with engine.connect() as conn:
+        query = text(
+            """INSERT INTO users (id, username, userPassword, firstName, lastName, email)
+                VALUES (:userID, :username, :userPassword, :firstName, :lastName, :email)"""
+        )
+
+        query_params = {
+            "userID": str(uuid.uuid4()),
+            "username": data["username"],
+            "userPassword": password_hash,
+            "firstName": data["first_name"],
+            "lastName": data["last_name"],
+            "email": data["email"],
+        }
+
+        conn.execute(
+            statement=query,
+            parameters=query_params,
+        )
 
 
 def get_timesheets(user_id):

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Time Tracker - Register</title>
+    <link rel="icon" type="image/x-icon" href="/static/clock.png">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    {% include 'bootstrap.html' %}
+
+
+    <style>
+        .login-div {
+            width: 500px;
+            height: 400px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-div container-sm text-center border align-middle">
+        <form method="POST">
+            <div class="row justify-content-center mt-3">
+                <div class="col-4">
+                    <label for="firstName" class="form-label">First Name:</label>
+                </div>
+                <div class="col-5">
+                    <input id="firstName" class="form-control" type="text" name="first_name">
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <div class="col-4">
+                    <label for="lastName" class="form-label">Last Name:</label>
+                </div>
+                <div class="col-5">
+                    <input id="lastName" class="form-control" type="text" name="last_name">
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <div class="col-4">
+                    <label for="email" class="form-label">Email:</label>
+                </div>
+                <div class="col-5">
+                    <input id="email" class="form-control" type="text" name="email">
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <div class="col-4">
+                    <label for="username" class="form-label">Username:</label>
+                </div>
+                <div class="col-5">
+                    <input id="username" class="form-control" type="text" name="username">
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <div class="col-4">
+                    <label for="password" class="form-label">Password:</label>
+                </div>
+                <div class="col-5">
+                    <input id="password" class="form-control" type="password" name="password">
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary mb-3 mt-3">Register</button>
+                </div>
+                <!-- <div class="col-4">
+                    <button type="button" class="btn btn-primary mb-3 mt-3">Register</button>
+                </div> -->
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
