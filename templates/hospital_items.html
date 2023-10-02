@@ -2,7 +2,6 @@
     <h3 class="display-6 col-4">
         <a class="link-dark link-underline-opacity-0" href="/hospitals">Hospitals</a>
     </h3>
-
     <div class="col-1">
         <a href="/hospital/add" type="button" class="btn btn-outline-primary">Add</a>
     </div>
@@ -20,7 +19,7 @@
     <tbody>
         {% for hospital in hospitals %}
         <tr>
-            <td class="text-nowrap">{{hospital['hospitalName']}}</td>
+            <td>{{hospital['hospitalName']}}</td>
             <td class="text-nowrap">{{hospital['hospitalAddress']}}</td>
             <td class="text-nowrap">{{hospital['hospitalCity']}}</td>
             <td class="text-nowrap text-center">{{hospital['hospitalState']}}</td>

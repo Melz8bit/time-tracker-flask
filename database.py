@@ -19,29 +19,15 @@ engine = create_engine(
             "ssl_ca": "/etc/ssl/cert.pem",
         }
     },
+    echo=False,
 )
 
 Base = declarative_base()
 
 
 def db_connect():
-    engine = create_engine(
-        DB_CONNECTION_STRING,
-        connect_args={
-            "ssl": {
-                "ssl_ca": "/etc/ssl/cert.pem",
-            }
-        },
-        echo=True,
-    )
-
     connection = engine.connect()
     return engine, connection
-
-
-def create_tables_orm(engine):
-    Base.metadata.drop_all(engine, checkfirst=True)
-    Base.metadata.create_all(engine, checkfirst=True)
 
 
 def create_session(engine):

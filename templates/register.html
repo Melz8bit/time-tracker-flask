@@ -25,9 +25,6 @@
 
 <body>
     <div class="login-div container-sm text-center border align-middle">
-        {% if first_name %}
-        <h1>Hello {{first_name}}</h1>
-        {% endif %}
         <form method="POST">
             {{ form.hidden_tag() }}
             <div class="row justify-content-center mt-3">
@@ -70,6 +67,16 @@
                     {{ form.password(class="form-control") }}
                 </div>
             </div>
+
+            <div class="row justify-content-center mt-3">
+                <div class="col-4">
+                    {{ form.password2.label(class="form-label") }}
+                </div>
+                <div class="col-5">
+                    {{ form.password2(class="form-control") }}
+                </div>
+            </div>
+
             <div class="row justify-content-center mt-3">
                 <div class="col-4">
                     {{ form.submit(class="btn btn-primary mb-3 mt-3") }}
