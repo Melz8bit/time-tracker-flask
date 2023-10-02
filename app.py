@@ -1,6 +1,8 @@
 import locale
 import os
+import uuid
 from datetime import date, datetime
+from dotenv import load_dotenv
 
 import bcrypt
 from flask import (
@@ -13,13 +15,28 @@ from flask import (
     request,
     url_for,
 )
-from flask_login import LoginManager, login_required
+from flask_login import LoginManager, login_required, current_user, login_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField, EmailField
+from wtforms.validators import DataRequired
 from jinja2 import Template
 
 import database
+from database import db_connect, create_session, create_tables_orm
 
+from models import users
+
+from sqlalchemy import select, null
+
+load_dotenv()
+
+DB_CONN_STRING = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}?ssl=true&ssl_ca=/etc/ssl/cert.pem"
 app = Flask(__name__)
-app.secret_key = os.getenv("APP_KEY")
+app.config["SECRET_KEY"] = os.getenv("APP_KEY")
+app.config["SQLALCHEMY_DATABASE_URI"] = DB_CONN_STRING
+
+engine, connection = db_connect()
+session = create_session(engine)
 
 date_template = Template("{{ date.strftime('%I:%M %p')}}")
 
@@ -30,12 +47,22 @@ login_manager.login_view = "login"
 USER_ID = ""
 
 
+class UserForm(FlaskForm):
+    first_name = StringField("First name", validators=[DataRequired()])
+    last_name = StringField("Last name", validators=[DataRequired()])
+    email = EmailField("Email", validators=[DataRequired()])
+    username = StringField("Username", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+
 @login_manager.user_loader
 def load_user(username):
-    return database.get_user_by_username(username)[0]
+    return database.get_login_user(username)[0]
 
 
 @app.route("/")
+# @login_required
 def home():
     users = database.get_user(USER_ID)
     timesheets = database.get_timesheets(USER_ID)
@@ -60,6 +87,7 @@ def login():
             if bcrypt.checkpw(user_password, user["userPassword"]):
                 global USER_ID
                 USER_ID = user["id"]
+
                 return redirect(url_for("home"))
 
     return render_template("login.html")
@@ -67,17 +95,69 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register_user():
-    if request.method == "POST":
-        data = request.form
-        password_bytes = data["password"].encode("utf-8")
-        password_hash = bcrypt.hashpw(password_bytes, bcrypt.gensalt()).decode("utf-8")
-        database.add_new_user(data, password_hash)
-        return jsonify(data)
+    first_name = None
+    last_name = None
+    email = None
+    username = None
+    password = None
+    form = UserForm()
 
-    return render_template("register.html")
+    # Validate Form
+    if form.validate_on_submit():
+        user_query = (
+            select(users.Users.email)
+            .select_from(users.Users)
+            .filter(users.Users.email == form.email.data)
+        )
+        result = session.execute(user_query).first()
+
+        if not result:
+            password_bytes = form.password.data.encode("utf-8")
+            password_hash = bcrypt.hashpw(password_bytes, bcrypt.gensalt()).decode(
+                "utf-8"
+            )
+            user = users.Users(
+                id=str(uuid.uuid4()),
+                username=form.username.data,
+                firstName=form.first_name.data,
+                lastName=form.last_name.data,
+                email=form.email.data,
+                userPassword=password_hash,
+                userRole="Standard",
+            )
+            session.add(user)
+            session.commit()
+            flash("User added")
+            return render_template("main.html")
+        else:
+            flash("Email already exists")
+            print("Email already exists")
+
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        email = form.email.data
+        username = form.username.data
+        password = form.password.data
+
+        form.first_name.data = ""
+        form.last_name.data = ""
+        form.email.data = ""
+        form.username.data = ""
+        form.password.data = ""
+
+    return render_template(
+        "register.html",
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        username=username,
+        password=password,
+        form=form,
+    )
 
 
 @app.route("/time/add", methods=["GET", "POST"])
+@login_required
 def save_time():
     if request.method == "POST":
         data = request.form
@@ -93,6 +173,7 @@ def save_time():
 
 
 @app.route("/timesheets")
+@login_required
 def show_all_timesheets():
     return render_template(
         "timesheets.html",
@@ -101,6 +182,7 @@ def show_all_timesheets():
 
 
 @app.route("/hospital/add", methods=["GET", "POST"])
+@login_required
 def save_hospital():
     if request.method == "POST":
         data = request.form
@@ -116,6 +198,7 @@ def save_hospital():
 
 
 @app.route("/invoice/create", methods=["GET", "POST"])
+@login_required
 def create_invoice():
     if request.method == "POST":
         invoice_code = request.form.get("invoice_code")
@@ -167,6 +250,7 @@ def create_invoice():
 
 
 @app.route("/hospitals")
+@login_required
 def show_all_hospitals():
     return render_template(
         "hospitals.html",
@@ -175,6 +259,7 @@ def show_all_hospitals():
 
 
 @app.route("/invoices", methods=["GET", "POST"])
+@login_required
 def show_all_invoices():
     if request.method == "POST":
         invoice_status = request.form.get("invoice_status")
@@ -194,6 +279,7 @@ def show_all_invoices():
 
 
 @app.route("/invoice/print")
+@login_required
 def print_invoice():
     user_info = database.get_user(USER_ID)[0]
 

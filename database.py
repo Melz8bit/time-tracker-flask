@@ -2,9 +2,12 @@ import os
 import uuid
 from datetime import datetime
 
-import sqlalchemy
+
 from dotenv import load_dotenv
+from flask_login import UserMixin
 from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 load_dotenv()
 DB_CONNECTION_STRING = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}?charset=utf8mb4"
@@ -18,9 +21,34 @@ engine = create_engine(
     },
 )
 
+Base = declarative_base()
 
-def __init__(self, user_id):
-    USER_ID = user_id
+
+def db_connect():
+    engine = create_engine(
+        DB_CONNECTION_STRING,
+        connect_args={
+            "ssl": {
+                "ssl_ca": "/etc/ssl/cert.pem",
+            }
+        },
+        echo=True,
+    )
+
+    connection = engine.connect()
+    return engine, connection
+
+
+def create_tables_orm(engine):
+    Base.metadata.drop_all(engine, checkfirst=True)
+    Base.metadata.create_all(engine, checkfirst=True)
+
+
+def create_session(engine):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    return session
 
 
 def get_results(sqlQuery):
@@ -31,6 +59,12 @@ def get_results(sqlQuery):
             rows.append(row)
 
     return rows
+
+
+def get_login_user(username):
+    return get_results(
+        f"select id, username, userPassword from users where users.username = '{username}' "
+    )
 
 
 def get_user(user_id):
