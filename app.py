@@ -19,7 +19,6 @@ from flask_login import (
     login_required,
     current_user,
     login_user,
-    UserMixin,
     logout_user,
 )
 from flask_wtf import FlaskForm
