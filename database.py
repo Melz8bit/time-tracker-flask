@@ -2,7 +2,6 @@ import os
 import uuid
 from datetime import datetime
 
-
 from dotenv import load_dotenv
 from flask_login import UserMixin
 from sqlalchemy import create_engine, text
