@@ -12,7 +12,7 @@
     <style>
         .login-div {
             width: 500px;
-            height: 400px;
+            height: 450px;
             position: absolute;
             top: 0;
             bottom: 0;
@@ -24,65 +24,75 @@
 </head>
 
 <body>
-    <div class="login-div container-sm text-center border align-middle">
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.first_name.label(class="form-label") }}
-                </div>
-                <div class="col-5">
-                    {{ form.first_name(class="form-control") }}
-                </div>
+    <div class="login-div container-sm text-center align-middle">
+        <div class="container-sm row align-items-center">
+            <div class="col">
+                <img src="/static/clock.png" class="img-thumbnail border-0" width="80px">
             </div>
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.last_name.label(class="form-label") }}
-                </div>
-                <div class="col-5">
-                    {{ form.last_name(class="form-control") }}
-                </div>
+            <div class="col justify-content-start">
+                <label class="fs-2">Time Tracker</label>
             </div>
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.email.label(class="form-label") }}
+        </div>
+        <div class="container-sm text-center border align-middle">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.first_name.label(class="form-label") }}
+                    </div>
+                    <div class="col-5">
+                        {{ form.first_name(class="form-control") }}
+                    </div>
                 </div>
-                <div class="col-5">
-                    {{ form.email(class="form-control") }}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.last_name.label(class="form-label") }}
+                    </div>
+                    <div class="col-5">
+                        {{ form.last_name(class="form-control") }}
+                    </div>
                 </div>
-            </div>
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.username.label(class="form-label") }}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.email.label(class="form-label") }}
+                    </div>
+                    <div class="col-5">
+                        {{ form.email(class="form-control") }}
+                    </div>
                 </div>
-                <div class="col-5">
-                    {{ form.username(class="form-control") }}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.username.label(class="form-label") }}
+                    </div>
+                    <div class="col-5">
+                        {{ form.username(class="form-control") }}
+                    </div>
                 </div>
-            </div>
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.password.label(class="form-label") }}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.password.label(class="form-label") }}
+                    </div>
+                    <div class="col-5">
+                        {{ form.password(class="form-control") }}
+                    </div>
                 </div>
-                <div class="col-5">
-                    {{ form.password(class="form-control") }}
-                </div>
-            </div>
 
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.password2.label(class="form-label") }}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.password2.label(class="form-label") }}
+                    </div>
+                    <div class="col-5">
+                        {{ form.password2(class="form-control") }}
+                    </div>
                 </div>
-                <div class="col-5">
-                    {{ form.password2(class="form-control") }}
-                </div>
-            </div>
 
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.submit(class="btn btn-primary mb-3 mt-3") }}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.submit(class="btn btn-primary mb-3 mt-3") }}
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </body>
 

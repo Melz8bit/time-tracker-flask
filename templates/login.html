@@ -31,36 +31,48 @@
     </div>
     {% endfor %}
 
-    <div class="login-div container-sm text-center border align-middle">
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.username.label(class="form-label") }}
-                </div>
-                <div class="col-5">
-                    {{ form.username(class="form-control") }}
-                </div>
-            </div>
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.password.label(class="form-label") }}
-                </div>
-                <div class="col-5">
-                    {{ form.password(class="form-control") }}
-                </div>
-            </div>
 
-            <div class="row justify-content-center mt-3">
-                <div class="col-4">
-                    {{ form.submit(class="btn btn-primary mb-3 mt-3") }}
-                    <!-- <button type="submit" class="btn btn-primary mb-3 mt-3">Login</button> -->
-                </div>
-                <div class="col-4">
-                    <a href="{{url_for('register_user')}}" type="button" class="btn btn-primary mb-3 mt-3">Register</a>
-                </div>
+    <div class="login-div container-sm text-center align-middle">
+        <div class="container-sm row align-items-center">
+            <div class="col">
+                <img src="/static/clock.png" class="img-thumbnail border-0" width="80px">
             </div>
-        </form>
+            <div class="col justify-content-start">
+                <label class="fs-2">Time Tracker</label>
+            </div>
+        </div>
+        <div class="container-sm text-center border align-middle">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.username.label(class="form-label") }}
+                    </div>
+                    <div class="col-5">
+                        {{ form.username(class="form-control") }}
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.password.label(class="form-label") }}
+                    </div>
+                    <div class="col-5">
+                        {{ form.password(class="form-control") }}
+                    </div>
+                </div>
+
+                <div class="row justify-content-center mt-3">
+                    <div class="col-4">
+                        {{ form.submit(class="btn btn-primary mb-3 mt-3") }}
+                        <!-- <button type="submit" class="btn btn-primary mb-3 mt-3">Login</button> -->
+                    </div>
+                    <div class="col-4">
+                        <a href="{{url_for('register_user')}}" type="button"
+                            class="btn btn-primary mb-3 mt-3">Register</a>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 
