@@ -90,8 +90,7 @@
                         {% endif %}
                         {{ user_info['mailingAddress'] }}</label><br>
                         {{ user_info['mailingCity'] }}, {{ user_info['mailingState'] }} {{ user_info['mailingZip']}}<br>
-                        <label class="fw-medium">Phone #:</label> {{ user_info['phoneNumber'] |
-                        format_phone_number }}<br>
+                        <label class="fw-medium">Phone #:</label> {{ user_info['phoneNumber']}}<br>
                         <div class="fs-6">
                             <label class="fw-medium">Email:</label> {{ user_info['email'] }}
                         </div>
@@ -106,8 +105,7 @@
                         {{ hospital_info['hospitalAddress'] }}</label><br>
                         {{ hospital_info['hospitalCity'] }}, {{ hospital_info['hospitalState'] }}
                         {{hospital_info['hospitalZip']}}<br>
-                        <label class="fw-medium">Phone #:</label> {{ hospital_info['hospitalPhone'] |
-                        format_phone_number }}<br>
+                        <label class="fw-medium">Phone #:</label> {{ hospital_info['hospitalPhone']}}<br>
                         <div class="fs-6">
                             <label class="fw-medium">Email:</label> {{ hospital_info['hospitalEmail'] }}<br>
                         </div>

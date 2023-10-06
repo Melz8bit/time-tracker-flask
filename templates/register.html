@@ -12,7 +12,7 @@
     <style>
         .login-div {
             width: 500px;
-            height: 450px;
+            height: 600px;
             position: absolute;
             top: 0;
             bottom: 0;
@@ -24,73 +24,71 @@
 </head>
 
 <body>
-    <div class="login-div container-sm text-center align-middle">
-        <div class="container-sm row align-items-center">
-            <div class="col">
-                <img src="/static/clock.png" class="img-thumbnail border-0" width="80px">
-            </div>
-            <div class="col justify-content-start">
-                <label class="fs-2">Time Tracker</label>
-            </div>
-        </div>
-        <div class="container-sm text-center border align-middle">
+    <div class="login-div container-sm text-center">
+        <img src="/static/clock.png" alt="" width="90">
+        <p class="text-center h1 fw-semibold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+
+        <div class="form-signin">
             <form method="POST">
                 {{ form.hidden_tag() }}
-                <div class="row justify-content-center mt-3">
-                    <div class="col-4">
-                        {{ form.first_name.label(class="form-label") }}
+                <div class="row form-floating align-items-end">
+                    <div class="col-4 text-end">
+                        {{ form.first_name.label(class="form-label", labelfor="x") }}
                     </div>
-                    <div class="col-5">
-                        {{ form.first_name(class="form-control") }}
+                    <div class="col-6">
+                        {{ form.first_name(class="form-control", id="x") }}
                     </div>
                 </div>
-                <div class="row justify-content-center mt-3">
-                    <div class="col-4">
+                <div class="row form-floating align-items-end mt-2">
+                    <div class="col-4 text-end">
                         {{ form.last_name.label(class="form-label") }}
                     </div>
-                    <div class="col-5">
+                    <div class="col-6">
                         {{ form.last_name(class="form-control") }}
                     </div>
                 </div>
-                <div class="row justify-content-center mt-3">
-                    <div class="col-4">
+                <div class="row form-floating align-items-end mt-2">
+                    <div class="col-4 text-end">
                         {{ form.email.label(class="form-label") }}
                     </div>
-                    <div class="col-5">
+                    <div class="col-6">
                         {{ form.email(class="form-control") }}
                     </div>
                 </div>
-                <div class="row justify-content-center mt-3">
-                    <div class="col-4">
+                <div class="row form-floating align-items-end mt-2">
+                    <div class="col-4 text-end">
                         {{ form.username.label(class="form-label") }}
                     </div>
-                    <div class="col-5">
+                    <div class="col-6">
                         {{ form.username(class="form-control") }}
                     </div>
                 </div>
-                <div class="row justify-content-center mt-3">
-                    <div class="col-4">
+                <div class="row form-floating align-items-end mt-2">
+                    <div class="col-4 text-end">
                         {{ form.password.label(class="form-label") }}
                     </div>
-                    <div class="col-5">
+                    <div class="col-6">
                         {{ form.password(class="form-control") }}
                     </div>
                 </div>
 
-                <div class="row justify-content-center mt-3">
-                    <div class="col-4">
+                <div class="row form-floating align-items-end mt-2">
+                    <div class="col-4 text-end">
                         {{ form.password2.label(class="form-label") }}
                     </div>
-                    <div class="col-5">
+                    <div class="col-6">
                         {{ form.password2(class="form-control") }}
                     </div>
                 </div>
+                <div class="mt-3">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
 
-                <div class="row justify-content-center mt-3">
+                <!-- <div class="row justify-content-center mt-3">
                     <div class="col-4">
                         {{ form.submit(class="btn btn-primary mb-3 mt-3") }}
                     </div>
-                </div>
+                </div> -->
             </form>
         </div>
     </div>

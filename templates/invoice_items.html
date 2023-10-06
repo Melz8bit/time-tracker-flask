@@ -31,13 +31,13 @@
             {% if request.endpoint == 'show_all_invoices' %}
             <td>
                 <div class="row gx-1 justify-content-around">
-                    <button class="btn btn-outline-primary btn-sm col-3 expand-button" type="button"
+                    <button class="btn btn-outline-primary btn-sm col expand-button mx-1" type="button"
                         data-bs-toggle="collapse" data-bs-target="#{{invoice['invoiceCode']}}" aria-expanded="false"
                         aria-controls="{{invoice['invoiceCode']}}">View
                     </button>
-                    <button id="updateButton" type="button" class="btn btn-outline-primary btn-sm col-4"
+                    <button id="updateButton" type="button" class="btn btn-outline-primary btn-sm col"
                         data-bs-toggle="modal" data-bs-target="#{{invoice['invoiceCode']}}">Update</button>
-                    <form action="/invoice/print" class="col-3" method="GET">
+                    <form action="/invoice/print" class="col mx-1" method="GET">
                         <input name="invoice_code" value="{{invoice['invoiceCode']}}" hidden />
                         <input name="hospital_id" value="{{invoice['invoiceHospitalID']}}" hidden />
                         <button class="btn btn-outline-primary btn-sm col w-100" type="submit">Print</button>

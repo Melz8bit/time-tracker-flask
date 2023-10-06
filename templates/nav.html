@@ -81,12 +81,19 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
-                            <div class="text-center">
-                                <img src="/static/account.png" alt="Account" height="32" width="32">
-                            </div>
-                            Account
-                        </a>
+                        <div class="dropdown">
+                            <a href="#" class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <div class="text-center">
+                                    <img src="/static/account.png" alt="Account" height="32" width="32">
+                                </div>
+                                Account
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">My Account</a></li>
+                                <li><a class="dropdown-item" href="{{url_for('logout')}}">Logout</a></li>
+                            </ul>
+                        </div>
                     </li>
                     <!-- <li>
                         <a href="#" class="nav-link text-white">
