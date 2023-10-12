@@ -166,10 +166,6 @@ def register_user():
         result = session.execute(user_query).first()
 
         if not result:
-            # password_bytes = form.password.data.encode("utf-8")
-            # password_hash = bcrypt.hashpw(password_bytes, bcrypt.gensalt()).decode(
-            #     "utf-8"
-            # )
             password_hash = generate_password_hash(form.password.data)
             user = users.Users(
                 id=str(uuid.uuid4()),
