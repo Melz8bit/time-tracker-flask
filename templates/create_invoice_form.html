@@ -20,14 +20,10 @@
                 <div class="col-sm-10">
                     <select class="form-select form-select-sm col-8 w-50" aria-label="Hospital name" name="hospital_id"
                         onchange="this.form.submit()" required>
-                        {% if user_hospitals | length==1 %}
-                        <option selected disabled>{{ user_hospitals[0]['hospitalName'] }}</option>
-                        {% else %}
                         <option selected>Select Hospital</option>
                         {% for user_hospital in user_hospitals %}
                         <option value="{{user_hospital['hospitalID']}}">{{ user_hospital['hospitalName'] }}</option>
                         {% endfor %}
-                        {% endif %}
                     </select>
                 </div>
             </div>
