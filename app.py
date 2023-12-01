@@ -358,7 +358,7 @@ def print_invoice():
 
 @app.template_filter()
 def format_currency(value):
-    locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+    locale.setlocale(locale.LC_ALL, "")
 
     if not value:
         return locale.currency(0, symbol=True, grouping=True)
