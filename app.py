@@ -358,12 +358,15 @@ def print_invoice():
 
 @app.template_filter()
 def format_currency(value):
-    locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+    # locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+    value = format(value, ",.2f")
 
     if not value:
-        return locale.currency(0, symbol=True, grouping=True)
+        return "$0.00"
+        # return locale.currency(0, symbol=True, grouping=True)
 
-    return locale.currency(value, symbol=True, grouping=True)
+    return "$" + str(value)
+    # return locale.currency(value, symbol=True, grouping=True)
 
 
 @app.template_filter()
