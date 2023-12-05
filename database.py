@@ -5,8 +5,8 @@ from datetime import datetime
 from dotenv import load_dotenv
 from flask_login import UserMixin
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 DB_CONNECTION_STRING = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}?charset=utf8mb4"

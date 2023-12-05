@@ -20,15 +20,22 @@
     </thead>
     <tbody>
         {% for invoice in invoices %}
+        {% if invoice['invoiceStatus'] != "Paid" and request.endpoint != 'show_all_invoices' %}
+        <!-- Main page invoices-->
         <tr class="align-middle">
-            <td>
-                {{invoice['hospitalName']}}
-            </td>
+            <td>{{invoice['hospitalName']}}</td>
             <td class="text-center">{{invoice['invoiceCode']}}</td>
             <td class="text-center">{{invoice['invoiceTotal'] | format_currency | string}}</td>
             <td class="text-center">{{invoice['invoiceStatus']}}</td>
             <td class="text-center">{{invoice['invoiceStatusDate'].strftime("%m/%d/%Y")}}</td>
-            {% if request.endpoint == 'show_all_invoices' %}
+        {% else %}
+        <!-- All invoices page -->
+        <tr class="align-middle">
+            <td>{{invoice['hospitalName']}}</td>
+            <td class="text-center">{{invoice['invoiceCode']}}</td>
+            <td class="text-center">{{invoice['invoiceTotal'] | format_currency | string}}</td>
+            <td class="text-center">{{invoice['invoiceStatus']}}</td>
+            <td class="text-center">{{invoice['invoiceStatusDate'].strftime("%m/%d/%Y")}}</td>
             <td>
                 <div class="row gx-1 justify-content-around">
                     <button class="btn btn-outline-primary btn-sm col expand-button mx-1" type="button"
@@ -82,7 +89,6 @@
                     </div>
                 </form>
             </td>
-            {% endif %}
         </tr>
         <tr></tr>
 
@@ -94,7 +100,7 @@
                 </div>
             </td>
         </tr>
-
+        {% endif %}
         {% endfor %}
     </tbody>
 </table>

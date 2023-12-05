@@ -354,6 +354,16 @@ def print_invoice():
     )
 
 
+@app.route("/account")
+def user_account():
+    user_info = database.get_user(USER_ID)[0]
+
+    return render_template(
+        "user_account.html",
+        user_info=user_info,
+    )
+
+
 @app.template_filter()
 def format_currency(value):
     # locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
