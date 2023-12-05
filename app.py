@@ -2,8 +2,8 @@ import locale
 import os
 import uuid
 from datetime import date, datetime
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from flask import (
     Flask,
     flash,
@@ -16,23 +16,21 @@ from flask import (
 )
 from flask_login import (
     LoginManager,
-    login_required,
     current_user,
+    login_required,
     login_user,
     logout_user,
 )
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, EmailField
-from wtforms.validators import DataRequired, EqualTo, Length
 from jinja2 import Template
-from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import null, select
+from werkzeug.security import check_password_hash, generate_password_hash
+from wtforms import EmailField, PasswordField, StringField, SubmitField
+from wtforms.validators import DataRequired, EqualTo, Length
 
 import database
-from database import db_connect, create_session
-
+from database import create_session, db_connect
 from models import users
-
-from sqlalchemy import select, null
 
 load_dotenv()
 
